@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library User Profile</title>
+  <link rel="stylesheet" href="style.css">
+   <style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: Arial, sans-serif;
+      }
+      
+      .profile-container {
+        display: flex;
+        height: 100vh;
+      }
+      
+      .sidebar {
+        width: 300px;
+        background-color: #2c3e50;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+      
+      .sidebar img {
+       
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+      }
+      
+      .sidebar h2 {
+        margin: 20px 0;
+        font-size: 24px;
+      }
+      
+      .sidebar p {
+        font-size: 18px;
+        color: #bdc3c7;
+      }
+      
+      .content {
+        flex: 1;
+        padding: 40px;
+      }
+      
+      .content h1 {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+      
+      .profile-details, .edit-form, .book-list {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      
+      .profile-details p {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+      
+      .book-list ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      
+      .book-list ul li {
+        font-size: 18px;
+        padding: 10px;
+        margin: 5px 0;
+        background-color: #ecf0f1;
+        border-radius: 5px;
+      }
+      
+      .btn-container {
+        display: flex;
+        justify-content: flex-end;
+      }
+      
+      .btn {
+        padding: 10px 20px;
+        margin-left: 10px;
+        font-size: 16px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      
+      .btn.save {
+        background-color: #3498db;
+      }
+      
+      .btn.edit {
+        background-color: #2ecc71;
+      }
+      
+      .btn.logout {
+        background-color: #e74c3c;
+      }
+      
+      .btn:hover {
+        opacity: 0.9;
+      }
+      
+      .edit-form {
+        display: none;
+      }
+      
+      .edit-form label {
+        font-size: 16px;
+        display: block;
+        margin-bottom: 5px;
+      }
+      
+      .edit-form input[type="text"], 
+      .edit-form input[type="email"], 
+      .edit-form input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 20px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      
+   </style>
+   <script>
+    // Initialize user data if not already present in localStorage
+if (!localStorage.getItem('user')) {
+    const defaultUser = {
+      username: 'vinayyadav_115',
+      email: 'example@gmail.com',
+      phone: '9955998855',
+      address: '456 Ryalamadugu',
+      membershipType: 'Gold Member',
+      booksRead: 25,
+      booksInCart: [
+        'The Great Gatsby',
+        'To Kill a Mockingbird',
+        '1984'
+      ],
+      profilePhoto: 'vinay pho.jpg'
+    };
+    localStorage.setItem('user', JSON.stringify(defaultUser));
+  }
+  
+  let user = JSON.parse(localStorage.getItem('user'));
+  
+  // Display user profile details
+  function displayProfile() {
+    document.getElementById('username').innerText = user.username;
+    document.getElementById('userEmail').innerText = user.email;
+    document.getElementById('phone').innerText = user.phone;
+    document.getElementById('address').innerText = user.address;
+    document.getElementById('membershipType').innerText = user.membershipType;
+    document.getElementById('booksRead').innerText = user.booksRead;
+    document.getElementById('profilePhoto').src = user.profilePhoto;
+  
+    const cartBooksList = document.getElementById('cartBooksList');
+    cartBooksList.innerHTML = '';
+    user.booksInCart.forEach(book => {
+      const listItem = document.createElement('li');
+      listItem.innerText = book;
+      cartBooksList.appendChild(listItem);
+    });
+  
+    document.getElementById('booksInCart').innerText = user.booksInCart.length;
+  }
+  
+  // Toggle the edit form visibility
+  function toggleEditForm() {
+    const form = document.getElementById('editForm');
+    const profileDetails = document.querySelector('.profile-details');
+    if (form.style.display === 'none' || form.style.display === '') {
+      form.style.display = 'block';
+      profileDetails.style.display = 'none';
+  
+      document.getElementById('editName').value = user.username;
+      document.getElementById('editEmail').value = user.email;
+      document.getElementById('editPhone').value = user.phone;
+      document.getElementById('editAddress').value = user.address;
+    } else {
+      form.style.display = 'none';
+      profileDetails.style.display = 'block';
+    }
+  }
+  
+  // Save profile changes
+  function saveProfile() {
+    user.username = document.getElementById('editName').value;
+    user.email = document.getElementById('editEmail').value;
+    user.phone = document.getElementById('editPhone').value;
+    user.address = document.getElementById('editAddress').value;
+  
+    localStorage.setItem('user', JSON.stringify(user));
+    toggleEditForm();
+    displayProfile();
+  }
+  
+  // Load profile photo
+  function loadPhoto(event) {
+    const reader = new FileReader();
+    reader.onload = function() {
+      user.profilePhoto = reader.result;
+      document.getElementById('profilePhoto').src = user.profilePhoto;
+      localStorage.setItem('user', JSON.stringify(user));
+    };
+    if (event.target.files[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+  
+  // Add book to cart
+  function addBook() {
+    const newBook = document.getElementById('newBook').value.trim();
+    if (newBook && !user.booksInCart.includes(newBook)) {
+      user.booksInCart.push(newBook);
+      document.getElementById('newBook').value = '';
+      localStorage.setItem('user', JSON.stringify(user));
+      displayProfile();
+    }
+  }
+  
+  // Logout function
+  function logout() {
+    localStorage.removeItem('user'); // Remove user data from localStorage
+    window.location.href='login.html'; // go to login page
+  }
+  
+  // Initial profile display
+  displayProfile();
+  
+   </script>
+</head>
+<body>
+    <div class="nav"></div>
+        <ul class="topnav">
+            <li><a href="login.html">Logout</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="books.html" >My Books</a></li>
+            <!-- <li><a href="index.html">Home</a></li> -->
+            
+        </ul>
+    </div>
+
+<div class="profile-container">
+  <aside class="sidebar">
+    <img src="https://ik.imagekit.io/llex5tfio/vinay%20pho.jpg?updatedAt=1710614991823" alt="User Photo" id="profilePhoto">
+    <h2 id="username">vinayyadav_115</h2>
+    <p id="userEmail">vinay@gmail.com</p>
+  </aside>
+
+  <main class="content">
+    <h1 style="padding-bottom: 10px;">User Profile</h1>
+
+    <section class="profile-details">
+      <p><strong>Phone:</strong> <span id="phone">9988557766</span></p>
+      <p><strong>Address:</strong> <span id="address">45-6 Ryalamadugu</span></p>
+      <p><strong>Library Membership:</strong> <span id="membershipType">Gold Member</span></p>
+      <p><strong>Books Read:</strong> <span id="booksRead">25</span></p>
+      <p><strong>Books in Cart:</strong> <span id="booksInCart">3</span></p>
+    </section>
+
+    <section class="edit-form" id="editForm">
+      <h3>Edit Profile</h3>
+      <label for="editPhoto">Profile Photo:</label>
+      <input type="file" id="editPhoto" accept="image/*" onchange="loadPhoto(event)">
+      
+      <label for="editName">Name:</label>
+      <input type="text" id="editName">
+      
+      <label for="editEmail">Email:</label>
+      <input type="email" id="editEmail">
+      
+      <label for="editPhone">Phone:</label>
+      <input type="text" id="editPhone">
+      
+      <label for="editAddress">Address:</label>
+      <input type="text" id="editAddress">
+
+      <label for="newBook">Add Book to Cart:</label>
+      <input type="text" id="newBook">
+      <button class="btn edit" onclick="addBook()">Add Book</button>
+      
+      <button class="btn save" onclick="saveProfile()">Save Profile</button>
+    </section>
+
+    <section class="book-list">
+      <h3>Books in Cart</h3>
+      <ul id="cartBooksList">
+        <!-- List of books will be dynamically populated -->
+      </ul>
+    </section>
+
+    <div class="btn-container">
+      <button class="btn edit" id="editProfileBtn" onclick="toggleEditForm()">Edit Profile</button>
+      <button class="btn logout" onclick="logout()">Logout</button>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

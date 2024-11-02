@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>singup</title>
+    <script language="javascript">
+        function login_validate(){
+            window.location.href='login.html';
+        }
+        function validate() {
+            // username validation
+            var uname = f1.username.value;
+            if (uname.length<=0)
+            {
+                alert("Please Enter UserName");
+                f1.username.focus();
+                return false;
+            }
+            if (uname.length < 8)
+            {
+                alert("Please enter UserName should be greater than 8");
+                f1.username.focus();
+                return false;
+            }
+            //password validation
+            var pwd = f1.password.value;
+            if (pwd.length<=0)
+            {
+                alert("Please Enter password");
+                f1.password.focus();
+                return false;
+            }
+            if (pwd.length < 6)
+            {
+                alert("Please enter Password not less than 6");
+                f1.password.focus();
+                return false;
+            }
+            // email validation
+            var email = f1.email.value;
+            if (email.length<=0)
+            {
+                alert("Please Enter email");
+                f1.email.focus();
+                return false;
+            }
+            else {
+                let eflag=false;
+                for(i=0;i<email.length;i++) {
+                    if(email.charAt(i)=="@") 
+                        { 
+                            eflag=true;
+                        }
+                }
+                    if(!(eflag)) 
+                    { 
+                        alert("Please enter a valid Email ID"); 
+                        f1.email.focus(); 
+                        return false; 
+                    }
+            }
+            // phone number validation
+            var phno = f1.phno.value;
+            if (phno.length<=0)
+            {
+                alert("Please Enter Phone Number");
+                f1.phno.focus();
+                return false;
+            }
+            if (isNaN(phno))
+            {
+                alert("Please Enter Valid Phone Number");
+                f1.phno.focus();
+                return false;
+            }
+            if (phno.length != 10)
+            {
+                alert("Please Enter Valid Phone Number");
+                f1.phno.focus();
+                return false;
+            }
+            window.location.href='profile.html';
+            return false;   
+        }
+        </script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="nav"></div>
+        <ul class="topnav">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="index.html">Home</a></li>
+            
+        </ul>
+    </div>
+        <div class="container1">
+            <div class="container2">
+                <div class="form">
+                    <main>
+                        <center><br>
+                            <h3 style="font-size: 40px;">Singup Details</h3>
+                            <br/>
+                            <form name="f1">
+                            <table cellpadding="1" align="center" >
+                            <tr><td> Name:*</td>
+                            <td><input type="text" name="username"></td></tr>
+                            <tr><td>Email ID:*</td>
+                            <td><input type="text" name="email"></td></tr>
+                            <tr><td>Password:*</td>
+                            <td><input type="password" name="password"></td></tr>
+                            <tr><td>Phone Number:*</td>
+                            <td><input type="text" name="phno"></td></tr>
+                            
+                            <tr><td></td>
+                            <td><input type="button" style="background-color: rgb(56, 43, 242); color:white" value="SIGNUP" hspace="10"  onclick="validate()">
+                            <input type="button" style="background-color: rgb(56, 43, 242); color:white" value="LOGIN" onclick="login_validate()"></td></tr>
+                            </table>
+                            </form>
+                        </center>
+                    </main>
+                </div>
+            </div>
+        </div> 
+    </div>
+</body>
+</html>

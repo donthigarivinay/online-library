@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+    <script language="javascript">
+        function signup_validate(){
+            window.location.href='signup.html';
+        }
+        function validate() {
+
+            var uname = f1.username.value;
+            if (uname.length<=0)
+            {
+                alert("Please Enter UserName");
+                f1.username.focus();
+                return false;
+            }
+            if (uname.length < 8)
+            {
+                alert("Please enter UserName should be greater than 8");
+                f1.username.focus();
+                return false;
+            }
+            //password validation
+            var pwd = f1.password.value;
+            if (pwd.length<=0)
+            {
+                alert("Please Enter password");
+                f1.password.focus();
+                return false;
+            }
+            if (pwd.length < 6)
+            {
+                alert("Please enter Password not less than 6");
+                f1.password.focus();
+                return false;
+            }
+            window.location.href='profile.html';
+            return false;
+        }
+        </script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="nav"></div>
+        <ul class="topnav">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="index.html" class="active">Home</a></li>
+            
+        </ul>
+    </div>
+        <div class="container1">
+            <div class="container2">
+                <div class="form">
+                    <center><br>
+                        <h3 style="font-size: 40px;">Login Details </h3>
+                        <br/>
+                        <form name="f1">
+                        <table cellpadding="1" align="center" >
+                        <tr><td> User Name:*</td>
+                        <td><input type="text" name="username"></td></tr>
+                        <tr><td>Password:*</td>
+                        <td><input type="password" name="password"></td></tr>
+                        <tr><td></td><td><input type="button" style="background-color: rgb(27, 71, 249);color:white" value="LOGIN" hspace="10" onclick="validate()">
+                        <input type="button" style="background-color: rgb(27, 71, 249);color:white" value="SIGN UP" onclick="signup_validate()"></td></tr>
+                        </table>
+                        </form>
+                    </center>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
